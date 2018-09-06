@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<style>
+		#result{
+			border: none;
+			width: 100%;
+			height: 300px;
+			resize: none;
+		}
+	</style>
+</head>
+<body class="container">
+	<div class="row">
+		<div class="col-4 mt-5">
+			<div class="card">
+				<div class="card-body">
+					<form onsubmit="return go()" action="#">
+						<div class="form-group">
+							<label for="input1">X(meter)</label>
+							<input type="number" step="any" class="form-control" id="input1" placeholder="Insert Here" required>
+							<small class="form-text text-muted">X coordination of point</small>
+						</div>
+						<div class="form-group">
+							<label for="input2">Y(meter)</label>
+							<input type="number" step="any" class="form-control" id="input2" placeholder="Insert Here" required>
+							<small class="form-text text-muted">Y coordination of point</small>
+						</div>
+						<div class="form-group">
+							<label for="input3">Degree(°)</label>
+							<input type="number" step="any" class="form-control" id="input3" placeholder="Insert Here" required>
+							<small class="form-text text-muted">Rotate degree in °</small>
+						</div>
+						<button type="submit" class="btn btn-primary">계산하기</button>
+						<button type="clear" class="btn btn-danger">초기화</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-8 mt-5">
+			<div class="card">
+				<div class="card-header">
+					Rotated point distance in meter from original point
+				</div>
+				<div class="card-body">
+					<textarea id="result" readonly=""></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	function go(){
+		var distance = null;
+		var x = parseFloat(document.getElementById("input1").value);
+		var y = parseFloat(document.getElementById("input2").value);
+		var degrees = parseFloat(document.getElementById("input3").value);
+		var radians = degrees * Math.PI / 180.0;
+		var rot_x = 0;
+		var rot_y = 0;
+
+		console.log(x,y);
+		console.log(degrees, radians);
+
+  		rot_x = x * Math.cos(radians) - y * Math.sin(radians);
+  		rot_y = x * Math.sin(radians) + y * Math.cos(radians);
+
+		console.log(rot_x,rot_y);
+
+		distance = Math.sqrt(Math.pow((x - rot_x), 2) + Math.pow((y - rot_y), 2));
+
+		console.log(result);
+
+		document.getElementById("result").innerHTML = distance;
+
+		return false;
+	}
+</script>
+</html>
