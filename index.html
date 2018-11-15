@@ -18,20 +18,62 @@
 		<div class="col-4 mt-5">
 			<div class="card">
 				<div class="card-body">
-					<form onsubmit="return go()" action="#">
+					<form onsubmit="return PointsAngle_go()" action="#">
 						<div class="form-group">
-							<label for="input1">X(meter)</label>
-							<input type="number" step="any" class="form-control" id="input1" placeholder="Insert Here" required>
+							<label for="PointsAngle_x0">Base X</label>
+							<input type="number" step="any" class="form-control" id="PointsAngle_x0" placeholder="Insert Here" value=235624.518 required>
+							<small class="form-text text-muted">X coordination of base point</small>
+						</div>
+						<div class="form-group">
+							<label for="PointsAngle_y0">Base Y</label>
+							<input type="number" step="any" class="form-control" id="PointsAngle_y0" placeholder="Insert Here" value=277994.875 required>
+							<small class="form-text text-muted">Y coordination of base point</small>
+						</div>
+						<div class="form-group">
+							<label for="PointsAngle_x1">Other X</label>
+							<input type="number" step="any" class="form-control" id="PointsAngle_x1" placeholder="Insert Here" value=235684.22 required>
+							<small class="form-text text-muted">X coordination of other point</small>
+						</div>
+						<div class="form-group">
+							<label for="PointsAngle_y1">Other Y</label>
+							<input type="number" step="any" class="form-control" id="PointsAngle_y1" placeholder="Insert Here" value=278058.30 required>
+							<small class="form-text text-muted">Y coordination of other point</small>
+						</div>
+						<button type="submit" class="btn btn-primary">계산하기</button>
+						<button type="clear" class="btn btn-danger">초기화</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-8 mt-5">
+			<div class="card">
+				<div class="card-header">
+					Other point angle from Y axis by base point<br>= 90° - ATAN((y1 - y0) / (x1 - x0))
+				</div>
+				<div class="card-body">
+					<textarea id="PointsAngle_result" readonly=""></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-4 mt-5">
+			<div class="card">
+				<div class="card-body">
+					<form onsubmit="return PointRotate_go()" action="#">
+						<div class="form-group">
+							<label for="PointRotate_input1">X(meter)</label>
+							<input type="number" step="any" class="form-control" id="PointRotate_input1" placeholder="Insert Here" required>
 							<small class="form-text text-muted">X coordination of point</small>
 						</div>
 						<div class="form-group">
-							<label for="input2">Y(meter)</label>
-							<input type="number" step="any" class="form-control" id="input2" placeholder="Insert Here" required>
+							<label for="PointRotate_input2">Y(meter)</label>
+							<input type="number" step="any" class="form-control" id="PointRotate_input2" placeholder="Insert Here" required>
 							<small class="form-text text-muted">Y coordination of point</small>
 						</div>
 						<div class="form-group">
-							<label for="input3">Degrees(°)</label>
-							<input type="number" step="any" class="form-control" id="input3" placeholder="Insert Here" required>
+							<label for="PointRotate_input3">Degrees(°)</label>
+							<input type="number" step="any" class="form-control" id="PointRotate_input3" placeholder="Insert Here" required>
 							<small class="form-text text-muted">Rotate degrees(°)</small>
 						</div>
 						<button type="submit" class="btn btn-primary">계산하기</button>
@@ -46,18 +88,38 @@
 					Rotated point distance in meter from original point
 				</div>
 				<div class="card-body">
-					<textarea id="result" readonly=""></textarea>
+					<textarea id="PointRotate_result" readonly=""></textarea>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
 <script>
-	function go(){
+	function PointsAngle_go(){
+		var x0 = parseFloat(document.getElementById("PointsAngle_x0").value);
+		var y0 = parseFloat(document.getElementById("PointsAngle_y0").value);
+		var x1 = parseFloat(document.getElementById("PointsAngle_x1").value);
+		var y1 = parseFloat(document.getElementById("PointsAngle_y1").value);
+		var m = null;
+		var angle = null;
+
+		console.log(x0,y0,x1,y1);
+
+		m = (y1 - y0) / (x1 - x0);
+  		angle = 90 - Math.atan(m)*180/Math.PI;
+
+		console.log(m,angle);
+
+		document.getElementById("PointsAngle_result").innerHTML = angle;
+
+		return false;
+	}
+
+	function PointRotate_go(){
 		var distance = null;
-		var x = parseFloat(document.getElementById("input1").value);
-		var y = parseFloat(document.getElementById("input2").value);
-		var degrees = parseFloat(document.getElementById("input3").value);
+		var x = parseFloat(document.getElementById("PointRotate_input1").value);
+		var y = parseFloat(document.getElementById("PointRotate_input2").value);
+		var degrees = parseFloat(document.getElementById("PointRotate_input3").value);
 		var radians = degrees * Math.PI / 180.0;
 		var rot_x = 0;
 		var rot_y = 0;
@@ -72,9 +134,9 @@
 
 		distance = Math.sqrt(Math.pow((x - rot_x), 2) + Math.pow((y - rot_y), 2));
 
-		console.log(result);
+		console.log(distance);
 
-		document.getElementById("result").innerHTML = distance;
+		document.getElementById("PointRotate_result").innerHTML = distance;
 
 		return false;
 	}
